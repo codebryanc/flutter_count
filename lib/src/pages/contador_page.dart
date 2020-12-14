@@ -28,22 +28,42 @@ class _ContadorPageState extends State<ContadorPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[Text('Número de clicks:', style: _estiloTexto), Text('$_counter', style: _estiloTexto)], // '$counter' => interpolación en DART o tambien podemos hacer counter.toString()
       )),
-      floatingActionButton: FloatingActionButton(
-          onPressed: this.presionado, // null  = diabled: true; // presionado its the function
-          child: Icon(Icons.add) //Text('hi'),
-          ),
+      floatingActionButton: _crearBotones(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  presionado() {
+  // _ es para decir que es privado
+  void _presionado(action) {
     // Esto nos permite hacer render de la pagina, pero ahora con estado
+    // Solo existe dentro de los StatefulWidgets
     setState(() {
       // Una manera de incrementar
-      this._counter = this._counter + 1;
+      // this._counter = this._counter + 1;
 
       // Es lo mismo
-      this._counter++;
+      if (action == '+') {
+        this._counter++;
+      } else if (action == '-') {
+        this._counter--;
+      } else if (action == '0') {
+        this._counter = 0;
+      }
     });
+  }
+
+  Widget _crearBotones() {
+    return Row(
+      children: <Widget>[
+        SizedBox(width: 10),
+        FloatingActionButton(child: Icon(Icons.remove), onPressed: () => {this._presionado('-')}),
+        Expanded(child: SizedBox()),
+        FloatingActionButton(child: Icon(Icons.exposure_zero), onPressed: () => {this._presionado('0')}),
+        SizedBox(width: 6),
+        FloatingActionButton(child: Icon(Icons.add), onPressed: () => {this._presionado('+')}),
+        SizedBox(width: 6)
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
   }
 }
